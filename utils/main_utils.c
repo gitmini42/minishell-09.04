@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:11:51 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/10 10:04:24 by pviegas-         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:10:44 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ char	**copy_envp(char **envp)
 	return (new_envp);
 }
 
-int count_args(char **args)
+int	count_args(char **args)
 {
-    int count;
+	int	count;
 
 	count = 0;
-    while (args[count])
-        count++;
-    return (count);
+	while (args[count])
+		count++;
+	return (count);
 }

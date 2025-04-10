@@ -2,18 +2,18 @@
 
 static size_t handle_exit_status(char *dest, int fill, size_t *i, size_t *j)
 {
-    char *status;
-    size_t len;
+	char *status;
+	size_t len;
 
-    status = ft_itoa(g_exit_status);
-    len = ft_strlen(status);
-    if (fill && dest)
-        ft_strcpy(dest, status);
-    free(status);
-    if (j)
-        *j += len;
-    *i += 2;
-    return (len);
+	status = ft_itoa(g_exit_status);
+	len = ft_strlen(status);
+	if (fill && dest)
+		ft_strcpy(dest, status);
+	free(status);
+	if (j)
+		*j += len;
+	*i += 2;
+	return (len);
 }
 
 static char	*get_var_value_helper(const char *name, t_var *vars, char **envp)
@@ -58,35 +58,35 @@ static size_t	get_var_len(const char *str, size_t i, t_var *vars, char **envp)
 }
 
 static size_t calc_expanded_size(const char *arg, t_var *vars, char **envp,
-                                 char quote_type)
+								char quote_type)
 {
-    size_t size;
-    size_t i;
-    size_t var_len;
+	size_t size;
+	size_t i;
+	size_t var_len;
 
 	size = 0;
 	i = 0;
-    if (quote_type == '\'')
-        return (ft_strlen(arg) + 1);
-    while (arg[i])
-    {
-        if (arg[i] == '$' && arg[i + 1] == '?')
-            size += handle_exit_status(NULL, 0, &i, NULL);
-        else if (arg[i] == '$' && (isalpha(arg[i + 1]) || arg[i + 1] == '_'))
-        {
-            var_len = get_var_len(arg, i, vars, envp);
-            size += var_len;
-            while (isalnum(arg[i + 1]) || arg[i + 1] == '_')
-                i++;
-            i++;
-        }
-        else
-        {
-            size++;
-            i++;
-        }
-    }
-    return (size + 1);
+	if (quote_type == '\'')
+		return (ft_strlen(arg) + 1);
+	while (arg[i])
+	{
+		if (arg[i] == '$' && arg[i + 1] == '?')
+			size += handle_exit_status(NULL, 0, &i, NULL);
+		else if (arg[i] == '$' && (isalpha(arg[i + 1]) || arg[i + 1] == '_'))
+		{
+			var_len = get_var_len(arg, i, vars, envp);
+			size += var_len;
+			while (isalnum(arg[i + 1]) || arg[i + 1] == '_')
+				i++;
+			i++;
+		}
+		else
+		{
+			size++;
+			i++;
+		}
+	}
+	return (size + 1);
 }
 
 static void	fill_expanded(char *dest, const char *src, t_var *vars,
@@ -136,17 +136,17 @@ static void	fill_expanded(char *dest, const char *src, t_var *vars,
 
 char	*expand_variables(const char *arg, t_var *vars, char **envp, char quote_type)
 {
-    size_t total_size;
-    char *expanded;
+	size_t total_size;
+	char *expanded;
 
-    if (!arg)
-        return (NULL);
-    total_size = calc_expanded_size(arg, vars, envp, quote_type);
-    expanded = malloc(total_size);
-    if (!expanded)
-        return (NULL);
-    fill_expanded(expanded, arg, vars, envp, quote_type);
-    return (expanded);
+	if (!arg)
+		return (NULL);
+	total_size = calc_expanded_size(arg, vars, envp, quote_type);
+	expanded = malloc(total_size);
+	if (!expanded)
+		return (NULL);
+	fill_expanded(expanded, arg, vars, envp, quote_type);
+	return (expanded);
 }
 
 /* char *expand_variables(char *arg, t_var *vars, char **envp)

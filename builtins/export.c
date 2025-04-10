@@ -6,7 +6,7 @@
 /*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:07:46 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/09 16:07:48 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:09:23 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,34 +70,34 @@ int	ft_export(char **args, t_var **vars, char ***envp)
 	char	*equal;
 	char	*name;
 	char	*value;
-	int		found;
+	//int		found;
 
 	status = 0;
 	if (!args[1])
 	{
 		print_exported_env(*envp);
-		var = *vars;
-		while (var)
-		{
-			if (var->exported)
-			{
-				found = 0;
-				i = 0;
-				while ((*envp)[i])
-				{
-					if (ft_strncmp((*envp)[i], var->name, ft_strlen(var->name)) == 0
-						&& (*envp)[i][ft_strlen(var->name)] == '=')
-					{
-						found = 1;
-						break ;
-					}
-					i++;
-				}
-				if (!found)
-					printf("export %s=\"%s\"\n", var->name, var->value);
-			}
-			var = var->next;
-		}
+		// var = *vars;
+		// while (var)
+		// {
+		// 	if (var->exported)
+		// 	{
+		// 		found = 0;
+		// 		i = 0;
+		// 		while ((*envp)[i])
+		// 		{
+		// 			if (ft_strncmp((*envp)[i], var->name, ft_strlen(var->name)) == 0
+		// 				&& (*envp)[i][ft_strlen(var->name)] == '=')
+		// 			{
+		// 				found = 1;
+		// 				break ;
+		// 			}
+		// 			i++;
+		// 		}
+		// 		if (!found)
+		// 			printf("export %s=\"%s\"\n", var->name, var->value);
+		// 	}
+		// 	var = var->next;
+		// }
 		return (0);
 	}
 	i = 1;

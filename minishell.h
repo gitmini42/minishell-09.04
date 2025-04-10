@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:06:47 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/10 10:48:17 by pviegas-         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:29:35 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ typedef struct CommandData
 //pipes
 void		handle_non_quoted_space(t_parse *state);
 void		add_argument(t_parse *state);
-void handle_end_of_quoted_string(t_parse *state);
+void		handle_end_of_quoted_string(t_parse *state);
 //token
 void		initialize_command_data(t_CommandData *data);
 void		is_pipe(t_CommandData **data, int *command_index, int *arg_index);
 void		redirect_input(char **args, t_CommandData *data, int *i);
 void		redirect_output(char **args, t_CommandData *data, int *i);
 void		redirect_output_append(char **args, t_CommandData *data, int *i);
-void	free_args(char **args2, t_CommandData *data);
+void		free_args(char **args2, t_CommandData *data);
 size_t		ft_strlen(const char *str);
 int			count_args(char **args);
 void		ft_putchar_fd(char c, int fd);
@@ -99,6 +99,9 @@ bool		free_and_continue_if_empty(char *input);
 void		free_data_commands(char **commands, int num_commands);
 void		free_data_arguments(char ***arguments, int num_commands);
 //int		execute_builtin(char **args);
+const char	*get_var_value(const char *name, t_var *vars);
+int 		ft_isspace(int c);
+int			check_builtin(char *command);
 int			is_builtin(char *command, char **args, int *i, char **envp);
 void		ft_echo(char **args);
 int			ft_pwd(void);
@@ -107,8 +110,7 @@ void		ft_exit(char **args);
 int			ft_unset(char **args, t_var **vars, char ***envp);
 void		ft_env(char **envp);
 //void	expand_arguments(char **args);
-int			execute_builtin(char *command, char **args, int *i,
-				char ***envp, t_var **vars, t_CommandData *data);
+int			execute_builtin(int *i, char ***envp, t_var **vars, t_CommandData *data);
 int			check_builtin(char *command);
 char		*ft_strcpy(char *dest, const char *src);
 char		*ft_strndup(const char *src, size_t n);
@@ -123,5 +125,6 @@ int			is_valid_var_name(const char *name);
 int			ft_export(char **args, t_var **vars, char ***envp);
 void		print_exported_env(char **envp);
 void	initialize_state(t_parse *state, const char *cmd);
+void	malloc_failed(void);
 
 #endif

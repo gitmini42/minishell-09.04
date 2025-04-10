@@ -6,6 +6,7 @@ RM = rm -rf
 LIBS = -Llibft -lft -lreadline
 
 SRCS =  ./builtins/check_execute_builtins.c \
+		./builtins/builtins_utils.c \
 		./builtins/echo.c \
 		./builtins/pwd.c \
 		./builtins/cd.c \

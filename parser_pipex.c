@@ -6,7 +6,7 @@
 /*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:32:45 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/09 18:54:44 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:48:48 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,12 @@ void	setup_pipes_and_redirections(int i, int num_commands, int *pipefd,
 	}
 }
 
+void	handle_pipe_error(pid_t *pids)
+{
+	perror("pipe");
+	g_exit_status = 1;
+	free(pids);
+}
 void	execute_commands(t_CommandData *data, char ***envp, t_var **vars)
 {
 	int		pipefd[2];
@@ -119,10 +125,7 @@ void	execute_commands(t_CommandData *data, char ***envp, t_var **vars)
 	heredoc_fd = -1;
 	pids = malloc(sizeof(pid_t) * data->num_commands);
 	if (!pids)
-	{
-		perror("malloc");
-		exit(1);
-	}
+		malloc_failed();
 	ft_memset(pids, 0, sizeof(pid_t) * data->num_commands);
 	while (i < data->num_commands)
 	{
@@ -130,10 +133,8 @@ void	execute_commands(t_CommandData *data, char ***envp, t_var **vars)
 		{
 			if (pipe(pipefd) == -1)
 			{
-				perror("pipe");
-				g_exit_status = 1;
-				free(pids);
-				return ;
+				handle_pipe_error(pids);
+				return;
 			}
 		}
 		if (data->heredoc_delim && i == 0)
@@ -161,8 +162,7 @@ void	execute_commands(t_CommandData *data, char ***envp, t_var **vars)
 					&prev_pipe_read, data);
 				if (is_builtin_cmd)
 				{
-					execute_builtin(data->commands[i], data->arguments[i], &i,
-						envp, vars, data);
+					execute_builtin(&i,	envp, vars, data);
 					exit(g_exit_status);
 				}
 				else
@@ -204,8 +204,7 @@ void	execute_commands(t_CommandData *data, char ***envp, t_var **vars)
 				close(heredoc_fd);
 				heredoc_fd = -1;
 			}
-			execute_builtin(data->commands[i], data->arguments[i], &i, envp,
-				vars, data);
+			execute_builtin(&i, envp, vars, data);
 		}
 		i++;
 	}

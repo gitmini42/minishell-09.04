@@ -6,7 +6,7 @@
 /*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:06:32 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/09 20:05:44 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:14:39 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int	ft_set_env(char **envp, const char *name, const char *value)
 	}
 	return (-1);
 }
-int gotohome(char **path)
+
+int	gotohome(char **path)
 {
 	*path = getenv("HOME");
 	if (*path == NULL)
@@ -55,9 +56,9 @@ int gotohome(char **path)
 
 int	ft_cd(char **args, int *i, char **envp)
 {
-	char *path;
-	char *old_pwd;
-	char *new_pwd;
+	char	*path;
+	char	*old_pwd;
+	char	*new_pwd;
 
 	old_pwd = getcwd(NULL, 0);
 	if (args[1] == NULL || strcmp(args[1], "~") == 0)
@@ -69,7 +70,7 @@ int	ft_cd(char **args, int *i, char **envp)
 		perror("cd");
 		g_exit_status = 1;
 		free(old_pwd);
-		return 1;
+		return (1);
 	}
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
@@ -77,7 +78,7 @@ int	ft_cd(char **args, int *i, char **envp)
 		perror("getcwd");
 		g_exit_status = 1;
 		free(old_pwd);
-		return 1;
+		return (1);
 	}
 	if (old_pwd)
 		ft_set_env(envp, "OLDPWD", old_pwd);

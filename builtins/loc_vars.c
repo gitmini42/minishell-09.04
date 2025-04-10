@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   loc_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:07:57 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/10 08:21:48 by pviegas-         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:30:01 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../minishell.h"
 
-t_var *g_vars = NULL;
+t_var	*g_vars = NULL;
 
 void	store_var(char *name, char *value, t_var **vars)
 {
@@ -41,20 +40,6 @@ void	store_var(char *name, char *value, t_var **vars)
 	*vars = new_var;
 }
 
-const char	*get_var_value(const char *name, t_var *vars)
-{
-	t_var	*var;
-
-	var = vars;
-	while (var)
-	{
-		if (ft_strcmp(var->name, name) == 0)
-			return (var->value);
-		var = var->next;
-	}
-	return (NULL);
-}
-
 void	free_all_vars(t_var **vars)
 {
 	t_var	*var;
@@ -72,22 +57,22 @@ void	free_all_vars(t_var **vars)
 	*vars = NULL;
 }
 
-int is_var_assignment(const char *input)
+int	is_var_assignment(const char *input)
 {
-    const char *equal;
-	const char *ptr;
+	const char	*equal;
+	const char	*ptr;
 
 	equal = ft_strchr(input, '=');
-    if (!equal || equal == input)
-        return 0;
-    ptr = input;
-    while (ptr < equal)
-    {
-        if (isspace(*ptr))
-            return 0;
-        ptr++;
-    }
-    return 1;
+	if (!equal || equal == input)
+		return (0);
+	ptr = input;
+	while (ptr < equal)
+	{
+		if (isspace(*ptr))
+			return (0);
+		ptr++;
+	}
+	return (1);
 }
 
 int	is_valid_var_name(const char *name)
@@ -119,7 +104,7 @@ void	handle_var_assignment(const char *input, t_var **vars)
 	}
 	*equal = '\0';
 	value = equal + 1;
-	while (*value && isspace(*value))//fazer ft_isspace
+	while (*value && ft_isspace(*value))
 		value++;
 	if (is_valid_var_name(name))
 		store_var(name, value, vars);

@@ -39,7 +39,8 @@ File = ft_atoi.c \
        get_next_line.c \
        get_next_line_utils.c \
        ft_strcmp.c \
-	   ft_strcpy.c
+	   ft_strcpy.c \
+	   ft_strcat.c
 
 
 BONUS= ft_lstadd_back.c \
