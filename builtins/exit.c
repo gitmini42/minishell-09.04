@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:05:58 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/09 16:40:00 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/10 10:02:15 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,6 @@ static int	is_numeric(const char *str)
 		i++;
 	}
 	return (1);
-}
-
-static void	free_args(char **args)
-{
-	int	i;
-
-	i = 0;
-	if (!args)
-		return ;
-	while (args[i])
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
 }
 
 void	ft_exit(char **args)
@@ -68,6 +53,6 @@ void	ft_exit(char **args)
 	else
 		exit_code = 0;
 	printf("Exiting minishell...\n");
-	free_args(args);
+	free_args(args, NULL);
 	exit(exit_code);
 }

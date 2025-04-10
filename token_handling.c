@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 18:22:05 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/09 19:34:27 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:04:17 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ void	free_command_data(t_CommandData *data)
 static void	handle_operator(char **args, t_CommandData *data, int *i,
 		int *command_index)
 {
-	const char	*token = args[*i];
+	const char	*token;
 
+	token = args[*i];
 	if (ft_strcmp(token, "|") == 0)
 	{
 		data->num_pipes++;

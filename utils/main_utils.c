@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:11:51 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/09 18:35:18 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/10 10:04:24 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,21 +55,6 @@ char	*ft_strndup(const char *src, size_t n)
 	return (dest);
 }
 
-void	free_envp(char **envp)
-{
-	int	i;
-
-	if (envp == NULL)
-		return ;
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		free(envp[i]);
-		i++;
-	}
-	free(envp);
-}
-
 char	**copy_envp(char **envp)
 {
 	int		i;
@@ -89,4 +74,14 @@ char	**copy_envp(char **envp)
 	}
 	new_envp[i] = NULL;
 	return (new_envp);
+}
+
+int count_args(char **args)
+{
+    int count;
+
+	count = 0;
+    while (args[count])
+        count++;
+    return (count);
 }

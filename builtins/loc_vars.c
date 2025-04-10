@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loc_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:07:57 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/09 16:08:01 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/10 08:21:48 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,22 @@ void	free_all_vars(t_var **vars)
 	*vars = NULL;
 }
 
-int	is_var_assignment(const char *input)
+int is_var_assignment(const char *input)
 {
-	const char	*equal;
+    const char *equal;
+	const char *ptr;
 
 	equal = ft_strchr(input, '=');
-	return (equal && equal != input);
+    if (!equal || equal == input)
+        return 0;
+    ptr = input;
+    while (ptr < equal)
+    {
+        if (isspace(*ptr))
+            return 0;
+        ptr++;
+    }
+    return 1;
 }
 
 int	is_valid_var_name(const char *name)
