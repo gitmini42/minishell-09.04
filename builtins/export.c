@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:07:46 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/11 05:30:51 by pviegas-         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:03:26 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,58 +31,60 @@ void	print_exported_env(char **envp)
 	}
 }
 
-static void update_env_var(char *name, char *value, char ***envp)
+static void	update_env_var(char *name, char *value, char ***envp)
 {
-    int i = 0;
-    int env_size = 0;
-    char **new_envp;
-    char *new_entry;
-    char *temp;
+	char	**new_envp;
+	char	*new_entry;
+	char	*temp;
+	int		env_size;
+	int		i;
 
-    temp = ft_strjoin(name, "=");
-    new_entry = ft_strjoin(temp, value);
-    free(temp);
-    if (!*envp)
-    {
-        *envp = malloc(2 * sizeof(char *));
-        if (!*envp)
-        {
-            free(new_entry);
-            return;
-        }
-        (*envp)[0] = ft_strdup(new_entry);
-        (*envp)[1] = NULL;
-        free(new_entry);
-        return;
-    }
-    while ((*envp)[env_size])
-        env_size++;
-    new_envp = malloc(sizeof(char *) * (env_size + 2));
-    if (!new_envp)
-    {
-        free(new_entry);
-        return;
-    }
-    i = 0;
-    while (i < env_size)
-    {
-        if (ft_strncmp((*envp)[i], name, ft_strlen(name)) == 0
-            && (*envp)[i][ft_strlen(name)] == '=')
-            new_envp[i] = ft_strdup(new_entry);
-        else
-            new_envp[i] = ft_strdup((*envp)[i]);
-        free((*envp)[i]);
-        i++;
-    }
-    if (i == env_size)
-    {
-        new_envp[i] = ft_strdup(new_entry);
-        i++;
-    }
-    new_envp[i] = NULL;
-    free(*envp);
-    free(new_entry);
-    *envp = new_envp;
+	i = 0;
+	env_size = 0;
+	temp = ft_strjoin(name, "=");
+	new_entry = ft_strjoin(temp, value);
+	free(temp);
+	if (!*envp)
+	{
+		*envp = malloc(2 * sizeof(char *));
+		if (!*envp)
+		{
+			free (new_entry);
+			return ;
+		}
+		(*envp)[0] = ft_strdup(new_entry);
+		(*envp)[1] = NULL;
+		free (new_entry);
+		return ;
+	}
+	while ((*envp)[env_size])
+		env_size++;
+	new_envp = malloc(sizeof(char *) * (env_size + 2));
+	if (!new_envp)
+	{
+		free(new_entry);
+		return ;
+	}
+	i = 0;
+	while (i < env_size)
+	{
+		if (ft_strncmp((*envp)[i], name, ft_strlen(name)) == 0
+			&& (*envp)[i][ft_strlen(name)] == '=')
+			new_envp[i] = ft_strdup(new_entry);
+		else
+			new_envp[i] = ft_strdup((*envp)[i]);
+		free((*envp)[i]);
+		i++;
+	}
+	if (i == env_size)
+	{
+		new_envp[i] = ft_strdup(new_entry);
+		i++;
+	}
+	new_envp[i] = NULL;
+	free(*envp);
+	free(new_entry);
+	*envp = new_envp;
 }
 
 int	ft_export(char **args, t_var **vars, char ***envp)
@@ -93,34 +95,11 @@ int	ft_export(char **args, t_var **vars, char ***envp)
 	char	*equal;
 	char	*name;
 	char	*value;
-	//int		found;
 
 	status = 0;
 	if (!args[1])
 	{
 		print_exported_env(*envp);
-		// var = *vars;
-		// while (var)
-		// {
-		// 	if (var->exported)
-		// 	{
-		// 		found = 0;
-		// 		i = 0;
-		// 		while ((*envp)[i])
-		// 		{
-		// 			if (ft_strncmp((*envp)[i], var->name, ft_strlen(var->name)) == 0
-		// 				&& (*envp)[i][ft_strlen(var->name)] == '=')
-		// 			{
-		// 				found = 1;
-		// 				break ;
-		// 			}
-		// 			i++;
-		// 		}
-		// 		if (!found)
-		// 			printf("export %s=\"%s\"\n", var->name, var->value);
-		// 	}
-		// 	var = var->next;
-		// }
 		return (0);
 	}
 	i = 1;

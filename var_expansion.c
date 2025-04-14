@@ -91,91 +91,91 @@ static size_t calc_expanded_size(const char *arg, t_var *vars, char **envp,
 
 static void fill_expanded(char *dest, const char *src, t_var *vars, char **envp, char quote_type)
 {
-    size_t i;
-    size_t j;
-    size_t var_len;
-    char *key;
-    char *val;
+	size_t i;
+	size_t j;
+	size_t var_len;
+	char *key;
+	char *val;
 
 	i = 0;
 	j = 0;
 	key = NULL;
-    if (!dest || !src)
-        return;
-    if (quote_type == '\'')
-    {
-        i = 1;
-        while (src[i] && src[i] != '\'')
-            dest[j++] = src[i++];
-    }
-    else if (quote_type == '"')
-    {
-        i = 1;
-        while (src[i] && src[i] != '"')
-        {
-            if (src[i] == '$' && (ft_isalpha(src[i + 1]) || src[i + 1] == '_' || src[i + 1] == '?'))
-            {
-                if (src[i + 1] == '?')
-                {
-                    handle_exit_status(&dest[j], 1, &i, &j);
-                }
-                else
-                {
-                    var_len = 0;
-                    while (ft_isalnum(src[i + 1 + var_len]) || src[i + 1 + var_len] == '_')
-                        var_len++;
-                    key = ft_strndup(&src[i + 1], var_len);
-                    if (!key)
-                        return;
-                    val = get_var_value_helper(key, vars, envp);
-                    if (val)
-                    {
-                        ft_strcpy(&dest[j], val);
-                        j += ft_strlen(val);
-                    }
-                    free(key);
-                    key = NULL;
-                    i += var_len + 1;
-                }
-            }
-            else
-                dest[j++] = src[i++];
-        }
-    }
-    else
-    {
-        while (src[i])
-        {
-            if (src[i] == '$' && (ft_isalpha(src[i + 1]) || src[i + 1] == '_' || src[i + 1] == '?'))
-            {
-                if (src[i + 1] == '?')
-                {
-                    handle_exit_status(&dest[j], 1, &i, &j);
-                }
-                else
-                {
-                    var_len = 0;
-                    while (ft_isalnum(src[i + 1 + var_len]) || src[i + 1 + var_len] == '_')
-                        var_len++;
-                    key = ft_strndup(&src[i + 1], var_len);
-                    if (!key)
-                        return;
-                    val = get_var_value_helper(key, vars, envp);
-                    if (val)
-                    {
-                        ft_strcpy(&dest[j], val);
-                        j += ft_strlen(val);
-                    }
-                    free(key);
-                    key = NULL;
-                    i += var_len + 1;
-                }
-            }
-            else
-                dest[j++] = src[i++];
-        }
-    }
-    dest[j] = '\0';
+	if (!dest || !src)
+		return;
+	if (quote_type == '\'')
+	{
+		i = 1;
+		while (src[i] && src[i] != '\'')
+			dest[j++] = src[i++];
+	}
+	else if (quote_type == '"')
+	{
+		i = 1;
+		while (src[i] && src[i] != '"')
+		{
+			if (src[i] == '$' && (ft_isalpha(src[i + 1]) || src[i + 1] == '_' || src[i + 1] == '?'))
+			{
+				if (src[i + 1] == '?')
+				{
+					handle_exit_status(&dest[j], 1, &i, &j);
+				}
+				else
+				{
+					var_len = 0;
+					while (ft_isalnum(src[i + 1 + var_len]) || src[i + 1 + var_len] == '_')
+						var_len++;
+					key = ft_strndup(&src[i + 1], var_len);
+					if (!key)
+						return;
+					val = get_var_value_helper(key, vars, envp);
+					if (val)
+					{
+						ft_strcpy(&dest[j], val);
+						j += ft_strlen(val);
+					}
+					free(key);
+					key = NULL;
+					i += var_len + 1;
+				}
+			}
+			else
+				dest[j++] = src[i++];
+		}
+	}
+	else
+	{
+		while (src[i])
+		{
+			if (src[i] == '$' && (ft_isalpha(src[i + 1]) || src[i + 1] == '_' || src[i + 1] == '?'))
+			{
+				if (src[i + 1] == '?')
+				{
+					handle_exit_status(&dest[j], 1, &i, &j);
+				}
+				else
+				{
+					var_len = 0;
+					while (ft_isalnum(src[i + 1 + var_len]) || src[i + 1 + var_len] == '_')
+						var_len++;
+					key = ft_strndup(&src[i + 1], var_len);
+					if (!key)
+						return;
+					val = get_var_value_helper(key, vars, envp);
+					if (val)
+					{
+						ft_strcpy(&dest[j], val);
+						j += ft_strlen(val);
+					}
+					free(key);
+					key = NULL;
+					i += var_len + 1;
+				}
+			}
+			else
+				dest[j++] = src[i++];
+		}
+	}
+	dest[j] = '\0';
 }
 
 char	*expand_variables(const char *arg, t_var *vars, char **envp, char quote_type)

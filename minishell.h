@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:06:47 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/11 08:27:47 by pviegas-         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:00:01 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,20 @@ typedef struct s_shell
 }	t_shell;
 
 typedef struct s_parse {
-    char **args;
-    int args_count;
-    bool in_quotes;
-    char quote_char;
-    size_t i;
-    size_t start;
-    int brace_count;
-    const char *cmd;
-    char *quote_types;
+    char		**args;
+    int			args_count;
+    bool		in_quotes;
+    char		quote_char;
+    size_t		i;
+    size_t		start;
+    int			brace_count;
+    const char	*cmd;
+    char		*quote_types;
 } t_parse;
 
 typedef struct s_parse_result {
-    char **args;
-    char *quote_types;
+    char	**args;
+    char	*quote_types;
 } t_parse_result;
 
 typedef struct CommandData
@@ -102,6 +102,7 @@ void		free_data_arguments(char ***arguments, int num_commands);
 //int		execute_builtin(char **args);
 const char	*get_var_value(const char *name, t_var *vars);
 int 		ft_isspace(int c);
+void		print_error(const char *msg, const char *arg);
 int			check_builtin(char *command);
 int			is_builtin(char *command, char **args, int *i, char **envp);
 void		ft_echo(char **args);
@@ -116,7 +117,7 @@ int			check_builtin(char *command);
 char		*ft_strcpy(char *dest, const char *src);
 char		*ft_strndup(const char *src, size_t n);
 //vars
-char	*expand_variables(const char *arg, t_var *vars, char **envp, char quote_type);
+char		*expand_variables(const char *arg, t_var *vars, char **envp, char quote_type);
 void		store_var(char *name, char *value, t_var **vars);
 const char	*get_var_value(const char *name, t_var *vars);
 void		free_all_vars(t_var **vars);
@@ -125,7 +126,7 @@ void		handle_var_assignment(const char *input, t_var **vars);
 int			is_valid_var_name(const char *name);
 int			ft_export(char **args, t_var **vars, char ***envp);
 void		print_exported_env(char **envp);
-void	initialize_state(t_parse *state, const char *cmd);
-void	malloc_failed(void);
-
+void		initialize_state(t_parse *state, const char *cmd);
+void		malloc_failed(void);
+char		*char_malloc_filed(void);
 #endif

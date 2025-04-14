@@ -6,7 +6,7 @@
 /*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:08:13 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/10 17:09:13 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:37:27 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,11 @@ static void	remove_from_env(char *name, char ***envp)
 	}
 }
 
-// static void print_error(const char *msg, const char *arg)
-// {
-// 	write(2, msg, strlen(msg));
-// 	write(2, arg, strlen(arg));
-// 	write(2, "\n", 1);
-// }
-
 static bool	is_invalid_arg(char *arg)
 {
 	if (!is_valid_var_name(arg))
 	{
-		//print_error("minishell: unset: ", arg);
+		print_error("minishell: unset: ", arg);
 		return (1);
 	}
 	return (0);
@@ -96,11 +89,11 @@ int	ft_unset(char **args, t_var **vars, char ***envp)
 	int	i;
 	int	status;
 
-	// if (!args[1])
-	// {
-	// 	print_error("minishell: unset: not enough arguments", "");
-	// 	return 1;
-	// }
+	if (!args[1])
+	{
+		print_error("minishell: unset: not enough arguments", "");
+		return (1);
+	}
 	i = 1;
 	status = 0;
 	while (args[i])

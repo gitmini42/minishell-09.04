@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_command_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:45:50 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/11 09:19:54 by pviegas-         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:55:03 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,11 @@ static char	*search_in_path(char *command, char **path_dirs)
 	{
 		temp = ft_strjoin(path_dirs[i++], "/");
 		if (!temp)
-		{
-			ft_putstr_fd("Error: malloc failed\n", STDERR_FILENO);
-			g_exit_status = 1;
-			return (NULL);
-		}
+			return (char_malloc_filed());
 		full_path = ft_strjoin(temp, command);
 		free(temp);
 		if (!full_path)
-		{
-			ft_putstr_fd("Error: malloc failed\n", STDERR_FILENO);
-			g_exit_status = 1;
-			return (NULL);
-		}
+			return (char_malloc_filed());
 		if (access(full_path, X_OK) == 0)
 			return (full_path);
 		free(full_path);

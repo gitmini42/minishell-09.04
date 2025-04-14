@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_execute_builtins.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:06:42 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/13 06:29:39 by pviegas-         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:11:29 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	execute_builtin(int *i, char ***envp, t_var **vars, t_CommandData *data)
 	if (!execute_builtin_command(command, args, vars, envp))
 	{
 		if (ft_strcmp(command, "cd") == 0)
-			ft_cd(args, i, *envp); //feito fora pela quantidade de parametros
+			ft_cd(args, i, *envp);
 		else
 			restore_fds(original_stdin, original_stdout);
 		return (0);
