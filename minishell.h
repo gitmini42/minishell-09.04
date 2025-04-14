@@ -125,7 +125,7 @@ int			is_var_assignment(const char *input);
 void		handle_var_assignment(const char *input, t_var **vars);
 int			is_valid_var_name(const char *name);
 int			ft_export(char **args, t_var **vars, char ***envp);
-void		print_exported_env(char **envp);
+int		print_exported_env(char **envp);
 void		initialize_state(t_parse *state, const char *cmd);
 void		malloc_failed(void);
 char		*char_malloc_filed(void);
