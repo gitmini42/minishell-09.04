@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:45:24 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/10 17:32:01 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:06:47 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/stat.h>
 
 int	g_exit_status = 0;
 
-void	sigint_handler()
+void sigint_handler()
 {
-	rl_replace_line("", 0);
-	printf("\n");
-	rl_on_new_line();
-	rl_redisplay();
-	fflush(stdout);
+    rl_replace_line("", 0);
+    printf("\n");
+    rl_on_new_line();
+    rl_redisplay();
+    fflush(stdout);
+    g_exit_status = 130;
 }
 
 void	setup_signals()
@@ -61,32 +63,86 @@ void	free_args(char **args2, t_CommandData *data)
 	free_command_data(data);
 }
 
-static void	expand_and_validate(char **tokens, char *quote_types, char **envp,
-								t_var **vars)
+static void expand_and_validate(char **tokens, char *quote_types, char ***envp, t_var **vars)
 {
-	char			**expanded_args;
-	t_CommandData	data;
-	int				i;
+    char **expanded_args;
+    t_CommandData data;
+    int i = 0;
+    struct stat st;
+	char *home;
+	size_t len;
+	char *tmp;
 
-	i = 0;
-	expanded_args = malloc(sizeof(char *) * (count_args(tokens) + 1));
-	if (!expanded_args)
-		return;
-	while (tokens[i])
-	{
-		expanded_args[i] = expand_variables(tokens[i], *vars, envp, quote_types[i]);
-		//printf("Expanded: %s\n", expanded_args[i]); precisa desse printf?
-		if (!expanded_args[i])
-			expanded_args[i] = ft_strdup(tokens[i]);
-		i++;
-	}
-	expanded_args[i] = NULL;
-	parse_input(expanded_args, count_args(expanded_args), &data);
-	execute_commands(&data, &envp, vars);
-	free_args(expanded_args, &data);
+    if (!tokens || !tokens[0])
+    {
+        g_exit_status = 0;
+        return;
+    }
+    expanded_args = malloc(sizeof(char *) * (count_args(tokens) + 1));
+    if (!expanded_args)
+    {
+        g_exit_status = 1;
+        return;
+    }
+    while (tokens[i])
+    {
+        if (i > 0 && ft_strcmp(tokens[i - 1], "<<") == 0)
+        {
+            expanded_args[i] = ft_strdup(tokens[i]); // Preserve heredoc delimiters
+        }
+        else
+        {
+            expanded_args[i] = expand_variables(tokens[i], *vars, *envp, quote_types[i]);
+            if (!expanded_args[i])
+                expanded_args[i] = ft_strdup(tokens[i]);
+            if (quote_types[i] == '"' || quote_types[i] == '\'')
+            {
+                tmp = expanded_args[i];
+                len = ft_strlen(tmp);
+                if (len >= 2 && tmp[0] == quote_types[i] && tmp[len - 1] == quote_types[i])
+                {
+                    expanded_args[i] = ft_strndup(tmp + 1, len - 2);
+                    free(tmp);
+                }
+            }
+        }
+        i++;
+    }
+    expanded_args[i] = NULL;
+    if (expanded_args[0])
+    {
+        if (ft_strcmp(expanded_args[0], "~") == 0)
+        {
+            home = getenv("HOME");
+            free(expanded_args[0]);
+            expanded_args[0] = ft_strdup(home ? home : "");
+        }
+        if (ft_strcmp(expanded_args[0], ".") == 0 || ft_strcmp(expanded_args[0], "..") == 0)
+        {
+            ft_putstr_fd("minishell: ", STDERR_FILENO);
+            ft_putstr_fd(expanded_args[0], STDERR_FILENO);
+            ft_putstr_fd(": command not found\n", STDERR_FILENO);
+            g_exit_status = 127;
+            free_args(expanded_args, NULL);
+            return;
+        }
+        if (stat(expanded_args[0], &st) == 0 && S_ISDIR(st.st_mode))
+        {
+            ft_putstr_fd("minishell: ", STDERR_FILENO);
+            ft_putstr_fd(expanded_args[0], STDERR_FILENO);
+            ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+            g_exit_status = 126;
+            free_args(expanded_args, NULL);
+            return;
+        }
+    }
+    ft_memset(&data, 0, sizeof(t_CommandData));
+    parse_input(expanded_args, count_args(expanded_args), &data);
+    execute_commands(&data, envp, vars);
+    free_args(expanded_args, &data);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+/* int	main(int argc, char *argv[], char *envp[])
 {
 	(void)argc;
 	(void)argv;
@@ -103,6 +159,11 @@ int	main(int argc, char *argv[], char *envp[])
 		input = readline("minishell> ");
 		if (!input)
 			break;
+		if (ft_strcmp(input, "exit") == 0)
+		{
+			free(input);
+			break;
+		}
 		if (free_and_continue_if_empty(input))
 			continue;
 		add_history(input);
@@ -114,63 +175,67 @@ int	main(int argc, char *argv[], char *envp[])
 			free(input);
 			continue;
 		}
-		expand_and_validate(parsed.args, parsed.quote_types, my_envp, &vars);
+		expand_and_validate(parsed.args, parsed.quote_types, &my_envp, &vars);
 		free_args(parsed.args, NULL);
 		free(parsed.quote_types);
 		free(input);
 	}
 	free_args(my_envp, NULL);
 	free_all_vars(&vars);
+	clear_history();
 	return (0);
+} */
+
+int main(int argc, char *argv[], char *envp[])
+{
+    (void)argc;
+    (void)argv;
+    char **my_envp;
+    char *input;
+    t_var *vars;
+    t_parse_result parsed;
+
+    vars = NULL;
+    my_envp = copy_envp(envp);
+    setup_signals();
+    while (1)
+    {
+        if (isatty(fileno(stdin)))
+            input = readline("minishell> ");
+        else
+        {
+            char *line = get_next_line(fileno(stdin));
+            if (!line)
+                break;
+            input = ft_strtrim(line, "\n");
+            free(line);
+        }
+        if (!input)
+            break;
+        if (ft_strcmp(input, "exit") == 0)
+        {
+            free(input);
+            break;
+        }
+        if (free_and_continue_if_empty(input))
+            continue;
+        add_history(input);
+        if (handle_and_continue_if_var_assignment(input, &vars))
+            continue;
+        parsed = parse_command(input);
+        if (!parsed.args)
+        {
+            free(input);
+            continue; // Syntax error already set g_exit_status
+        }
+        expand_and_validate(parsed.args, parsed.quote_types, &my_envp, &vars);
+        free_args(parsed.args, NULL);
+        free(parsed.quote_types);
+        free(input);
+    }
+    free_args(my_envp, NULL);
+    free_all_vars(&vars);
+    clear_history();
+    return (g_exit_status);
 }
 
-/* int main(int argc, char *argv[], char *envp[])
-{
-	(void)argc;
-	(void)argv;
-	char **my_envp = copy_envp(envp);
-	t_var *vars = NULL;
-	char *input; // Rename to prompt for clarity
-	char *expanded;
-
-	setup_signals();
-	while (1)
-	{
-		if (isatty(fileno(stdin)))
-		{
-			// Interactive mode
-			input = readline("minishell> ");
-			if (!input) // EOF or Ctrl+D
-				break;
-		}
-		else
-		{
-			// Tester mode
-			char *line = get_next_line(fileno(stdin));
-			if (!line) // End of input
-				break;
-			input = ft_strtrim(line, "\n");
-			free(line);
-			if (!input) // ft_strtrim failed
-				continue;
-		}
-		if (free_and_continue_if_empty(input))
-			continue;
-		if (handle_and_continue_if_var_assignment(input, &vars))
-			continue;
-		expanded = expand_variables(input, vars, my_envp);
-		if (!expanded)
-		{
-			free(input);
-			continue;
-		}
-		parse_and_validate_input(expanded, my_envp, &vars);
-		if (isatty(fileno(stdin)))
-			add_history(input); // Only add history in interactive mode
-		free(expanded);
-		free(input);
-	}
-	free_envp(my_envp);
-	free_all_vars(&vars);
-	return 0;
-} */

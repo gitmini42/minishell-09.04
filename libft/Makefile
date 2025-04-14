@@ -36,11 +36,12 @@ File = ft_atoi.c \
        ft_putnbr_base.c \
        ft_putnbr_base_u.c \
        ft_putnbr_base_ul.c \
-       get_next_line.c \
-       get_next_line_utils.c \
        ft_strcmp.c \
 	   ft_strcpy.c \
-	   ft_strcat.c
+	   ft_strcat.c \
+	   get_next_line.c \
+       get_next_line_utils.c \
+	   #ft_strjoin.c
 
 
 BONUS= ft_lstadd_back.c \

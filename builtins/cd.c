@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:06:32 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/10 17:14:39 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/11 04:53:05 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,24 @@
 
 int	ft_set_env(char **envp, const char *name, const char *value)
 {
-	size_t	name_len;
+	size_t	name_l;
 	size_t	value_len;
 	int		i;
 	char	*new_entry;
 
-	name_len = ft_strlen(name);
+	name_l = ft_strlen(name);
 	value_len = ft_strlen(value);
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], name, name_len) == 0
-			&& envp[i][name_len] == '=')
+		if (ft_strncmp(envp[i], name, name_l) == 0 && envp[i][name_l] == '=')
 		{
-			new_entry = malloc(name_len + value_len + 2);
+			new_entry = malloc(name_l + value_len + 2);
 			if (!new_entry)
 				return (-1);
 			ft_strcpy(new_entry, name);
-			new_entry[name_len] = '=';
-			ft_strcpy(new_entry + name_len + 1, value);
+			new_entry[name_l] = '=';
+			ft_strcpy(new_entry + name_l + 1, value);
 			free(envp[i]);
 			envp[i] = new_entry;
 			return (0);

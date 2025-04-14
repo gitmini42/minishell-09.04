@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:06:47 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/10 17:29:35 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/11 08:27:47 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct CommandData
 	int		append_output;// Flag for append mode (>>)
 	int		num_commands;// Number of commands
 	int		num_pipes;// Number of pipes
+	int		heredoc_quoted; // heredoc delimiter is quoted
 }	t_CommandData;
 //pipes
 void		handle_non_quoted_space(t_parse *state);

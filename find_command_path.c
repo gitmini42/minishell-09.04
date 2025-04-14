@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_command_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:45:50 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/09 16:45:51 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/11 09:19:54 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static char	*search_in_path(char *command, char **path_dirs)
 		if (!temp)
 		{
 			ft_putstr_fd("Error: malloc failed\n", STDERR_FILENO);
+			g_exit_status = 1;
 			return (NULL);
 		}
 		full_path = ft_strjoin(temp, command);
@@ -53,6 +54,7 @@ static char	*search_in_path(char *command, char **path_dirs)
 		if (!full_path)
 		{
 			ft_putstr_fd("Error: malloc failed\n", STDERR_FILENO);
+			g_exit_status = 1;
 			return (NULL);
 		}
 		if (access(full_path, X_OK) == 0)
@@ -91,6 +93,7 @@ char	*find_command_path(char *command, char *const envp[])
 	if (!path_dirs)
 	{
 		ft_putstr_fd("Error: ft_split failed\n", STDERR_FILENO);
+		g_exit_status = 1;
 		exit(1);
 	}
 	result = search_in_path(command, path_dirs);

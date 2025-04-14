@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 18:27:28 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/09 18:53:52 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/11 09:24:39 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	initialize_command_data(t_CommandData *data)
 	data->output_file = NULL;
 	data->append_output = 0;
 	data->heredoc_delim = NULL;
+	data->heredoc_quoted = 0;
 }
 
 void	is_pipe(t_CommandData **data, int *command_index, int *arg_index)
@@ -36,6 +37,7 @@ void	redirect_input(char **args, t_CommandData *data, int *i)
 	if (args[*i + 1] == NULL)
 	{
 		write(STDERR_FILENO, "Error: No input file specified after '<'\n", 41);
+		g_exit_status = 1;
 		return ;
 	}
 	data->input_file = ft_strdup(args[*i + 1]);
@@ -47,6 +49,7 @@ void	redirect_output(char **args, t_CommandData *data, int *i)
 	if (args[*i + 1] == NULL)
 	{
 		write(STDERR_FILENO, "Error: No output file specified after '>'\n", 42);
+		g_exit_status = 1;
 		return ;
 	}
 	data->output_file = ft_strdup(args[*i + 1]);
@@ -59,6 +62,7 @@ void	redirect_output_append(char **args, t_CommandData *data, int *i)
 	{
 		write(STDERR_FILENO, "Error: No output file specified after '>>'\n",
 			43);
+		g_exit_status = 1;
 		return ;
 	}
 	data->output_file = ft_strdup(args[*i + 1]);

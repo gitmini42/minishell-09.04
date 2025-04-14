@@ -1,26 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pviegas- <pviegas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 16:08:06 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/13 06:30:48 by pviegas-         ###   ########.fr       */
+/*   Created: 2023/11/13 12:22:54 by pviegas-          #+#    #+#             */
+/*   Updated: 2024/11/19 14:10:33 by pviegas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_pwd(void)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	cwd[PATH_MAX];
+	size_t	lens1;
+	size_t	lens2;
+	size_t	i;
+	size_t	j;
+	char	*str;
 
-	if (getcwd(cwd, PATH_MAX))
+	lens1 = ft_strlen(s1);
+	lens2 = ft_strlen(s2);
+	i = 0;
+	j = 0;
+	str = malloc(lens1 + lens2 + 1);
+	if (str == NULL)
+		return (NULL);
+	while (s1 && s1[i] != '\0')
 	{
-		ft_putendl_fd(cwd, 1);
-		return (1);
+		str[i] = s1[i];
+		i++;
 	}
-	else
-		return (0);
+	while (s2 && s2[j] != '\0')
+	{
+		str[j + i] = s2[j];
+		j++;
+	}
+	str[j + i] = '\0';
+	return (str);
 }
