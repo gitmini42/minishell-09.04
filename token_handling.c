@@ -6,7 +6,7 @@
 /*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 18:22:05 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/14 12:20:59 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:42:09 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ void	free_command_data(t_CommandData *data)
 	data->num_pipes = 0;
 }
 
-static void handle_operator(char **args, t_CommandData *data, int *i, int *command_index)
+static void	handle_operator(char **args, t_CommandData *data,
+		int *i, int *command_index)
 {
-	const char *token = args[*i];
-	size_t len;
-	char *delim;
+	const char	*token = args[*i];
+	size_t		len;
+	char		*delim;
 
 	if (ft_strcmp(token, "|") == 0)
 	{
@@ -84,8 +85,8 @@ static void handle_operator(char **args, t_CommandData *data, int *i, int *comma
 			free(data->heredoc_delim);
 			delim = args[*i + 1];
 			len = ft_strlen(delim);
-			// Strip quotes if present
-			if (len >= 2 && (delim[0] == '"' || delim[0] == '\'') && delim[len - 1] == delim[0])
+			if (len >= 2 && (delim[0] == '"' || delim[0] == '\'') \
+				&& delim[len - 1] == delim[0])
 			{
 				data->heredoc_delim = ft_strndup(delim + 1, len - 2);
 				data->heredoc_quoted = 1;
@@ -99,7 +100,8 @@ static void handle_operator(char **args, t_CommandData *data, int *i, int *comma
 		}
 		else
 		{
-			write(STDERR_FILENO, "Error: No delimiter specified after '<<'\n", 42);
+			write(STDERR_FILENO, "Error: No delimiter specified after '<<'\n",
+				 42);
 		}
 	}
 	(*i)++;
@@ -107,10 +109,10 @@ static void handle_operator(char **args, t_CommandData *data, int *i, int *comma
 
 void parse_input(char **args, int count, t_CommandData *data)
 {
-	int arg_index;
-	int *arg_counts;
-	int command_index;
-	int i;
+	int	arg_index;
+	int	*arg_counts;
+	int	command_index;
+	int	i;
 
 	ft_memset(data, 0, sizeof(t_CommandData));
 	arg_counts = malloc(count * sizeof(int));

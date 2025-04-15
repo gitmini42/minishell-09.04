@@ -6,7 +6,6 @@ RM = rm -rf
 LIBS = -Llibft -lft -lreadline
 
 SRCS =  ./builtins/check_execute_builtins.c \
-		./builtins/builtins_utils.c \
 		./builtins/echo.c \
 		./builtins/pwd.c \
 		./builtins/cd.c \
@@ -15,10 +14,12 @@ SRCS =  ./builtins/check_execute_builtins.c \
 		./builtins/unset.c \
 		./builtins/env.c \
 		./builtins/exit.c \
+		./utils/builtins_utils.c \
 		./utils/main_utils.c \
 		./utils/pipes_utils.c \
 		./utils/token_utils.c \
 		./utils/token_utils2.c \
+		./utils/export_utils.c \
 		main.c parser_pipex.c pipes_exec.c \
 		token_handling.c find_command_path.c var_expansion.c
 

@@ -6,7 +6,7 @@
 /*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:45:24 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/14 12:27:49 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:36:01 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ char	*get_user_input(void)
 			return NULL;
 		input = ft_strtrim(line, "\n");
 		free(line);
-		return input;
+		return (input);
 	}
 }
 
@@ -189,11 +189,10 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	(void)argc;
 	(void)argv;
-	char		**my_envp;
-	char		*input;
-	t_var		*vars;
+	char			**my_envp;
+	char			*input;
+	t_var			*vars;
 	t_parse_result	parsed;
-
 
 	my_envp = copy_envp(envp);
 	vars = NULL;

@@ -6,30 +6,13 @@
 /*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 18:12:49 by scarlos-          #+#    #+#             */
-/*   Updated: 2025/04/14 11:38:51 by scarlos-         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:43:43 by scarlos-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-//I don't think this is used anymore
-/* char **finalize_args(t_parse *state)
-{
-	if (state->in_quotes)
-	{
-		ft_putstr_fd("Error: unclosed quotes\n", STDERR_FILENO);
-		g_exit_status = 1;
-		free(state->args);
-		free(state->quote_types);
-		return (NULL);
-	}
-	state->args[state->args_count] = NULL;
-	free(state->quote_types);
-	return (state->args);
-} */
-
-void initialize_state(t_parse *state, const char *cmd)
+void	initialize_state(t_parse *state, const char *cmd)
 {
 	size_t max_tokens;
 
@@ -53,29 +36,12 @@ void initialize_state(t_parse *state, const char *cmd)
 	ft_memset(state->quote_types, 0, sizeof(char) * max_tokens);
 }
 
-/* static void handle_quoted_string(t_parse *state)
-{
-	state->in_quotes = true;
-	state->quote_char = state->cmd[state->i];
-	state->start = state->i;
-	state->i++;
-}
-
-static void handle_braces_and_escapes(t_parse *state)
-{
-	if (state->cmd[state->i] == '{')
-		state->brace_count++;
-	else if (state->cmd[state->i] == '}')
-		state->brace_count--;
-	state->i++;
-} */
-
-t_parse_result parse_command(const char *cmd)
+t_parse_result	parse_command(const char *cmd)
 {
 	t_parse			state;
 	t_parse_result	result;
 	int				last_was_operator;
-	
+
 	int is_double;
 	char op;
 	size_t max_tokens;

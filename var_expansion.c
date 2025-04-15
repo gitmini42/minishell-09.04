@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   var_expansion.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: scarlos- <scarlos-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/15 11:37:12 by scarlos-          #+#    #+#             */
+/*   Updated: 2025/04/15 11:40:27 by scarlos-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static size_t handle_exit_status(char *dest, int fill, size_t *i, size_t *j)
+static size_t	handle_exit_status(char *dest, int fill, size_t *i, size_t *j)
 {
-	char *status;
-	size_t len;
+	char	*status;
+	size_t	len;
 
 	status = ft_itoa(g_exit_status);
 	len = ft_strlen(status);
@@ -57,12 +69,12 @@ static size_t	get_var_len(const char *str, size_t i, t_var *vars, char **envp)
 	return (var_len);
 }
 
-static size_t calc_expanded_size(const char *arg, t_var *vars, char **envp,
+static size_t	calc_expanded_size(const char *arg, t_var *vars, char **envp,
 								char quote_type)
 {
-	size_t size;
-	size_t i;
-	size_t var_len;
+	size_t	size;
+	size_t	i;
+	size_t	var_len;
 
 	size = 0;
 	i = 0;
@@ -89,19 +101,20 @@ static size_t calc_expanded_size(const char *arg, t_var *vars, char **envp,
 	return (size + 1);
 }
 
-static void fill_expanded(char *dest, const char *src, t_var *vars, char **envp, char quote_type)
+static void	fill_expanded(char *dest, const char *src, t_var *vars,
+			char **envp, char quote_type)
 {
-	size_t i;
-	size_t j;
-	size_t var_len;
-	char *key;
-	char *val;
+	size_t	i;
+	size_t	j;
+	size_t	var_len;
+	char	*key;
+	char	*val;
 
 	i = 0;
 	j = 0;
 	key = NULL;
 	if (!dest || !src)
-		return;
+		return ;
 	if (quote_type == '\'')
 	{
 		i = 1;
@@ -113,7 +126,8 @@ static void fill_expanded(char *dest, const char *src, t_var *vars, char **envp,
 		i = 1;
 		while (src[i] && src[i] != '"')
 		{
-			if (src[i] == '$' && (ft_isalpha(src[i + 1]) || src[i + 1] == '_' || src[i + 1] == '?'))
+			if (src[i] == '$' && (ft_isalpha(src[i + 1]) || \
+				src[i + 1] == '_' || src[i + 1] == '?'))
 			{
 				if (src[i + 1] == '?')
 				{
@@ -122,11 +136,12 @@ static void fill_expanded(char *dest, const char *src, t_var *vars, char **envp,
 				else
 				{
 					var_len = 0;
-					while (ft_isalnum(src[i + 1 + var_len]) || src[i + 1 + var_len] == '_')
+					while (ft_isalnum(src[i + 1 + var_len]) || \
+							src[i + 1 + var_len] == '_')
 						var_len++;
 					key = ft_strndup(&src[i + 1], var_len);
 					if (!key)
-						return;
+						return ;
 					val = get_var_value_helper(key, vars, envp);
 					if (val)
 					{
@@ -146,7 +161,8 @@ static void fill_expanded(char *dest, const char *src, t_var *vars, char **envp,
 	{
 		while (src[i])
 		{
-			if (src[i] == '$' && (ft_isalpha(src[i + 1]) || src[i + 1] == '_' || src[i + 1] == '?'))
+			if (src[i] == '$' && (ft_isalpha(src[i + 1]) || \
+				src[i + 1] == '_' || src[i + 1] == '?'))
 			{
 				if (src[i + 1] == '?')
 				{
@@ -155,11 +171,12 @@ static void fill_expanded(char *dest, const char *src, t_var *vars, char **envp,
 				else
 				{
 					var_len = 0;
-					while (ft_isalnum(src[i + 1 + var_len]) || src[i + 1 + var_len] == '_')
+					while (ft_isalnum(src[i + 1 + var_len])
+						|| src[i + 1 + var_len] == '_')
 						var_len++;
 					key = ft_strndup(&src[i + 1], var_len);
 					if (!key)
-						return;
+						return ;
 					val = get_var_value_helper(key, vars, envp);
 					if (val)
 					{
@@ -178,10 +195,11 @@ static void fill_expanded(char *dest, const char *src, t_var *vars, char **envp,
 	dest[j] = '\0';
 }
 
-char	*expand_variables(const char *arg, t_var *vars, char **envp, char quote_type)
+char	*expand_variables(const char *arg, t_var *vars,
+		char **envp, char quote_type)
 {
-	size_t total_size;
-	char *expanded;
+	size_t	total_size;
+	char	*expanded;
 
 	if (!arg)
 		return (NULL);
